@@ -1,0 +1,27 @@
+html, body {
+	height: 100%;
+	}
+#tabs {
+	width: 49%;
+	float: left;
+	height: 100%;
+}
+#builder{
+	width: 50%;
+	height: 100%;
+	float: left;
+	background-color: green;
+}
+
+.event_col1, .event_col2, .event_col3, .event_col4 {
+	float: left;
+	width: 25%;
+}
+
+#options_container {
+	height: 350px;
+}
+
+.location_container {
+	height: 200px;
+}
