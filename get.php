@@ -26,47 +26,60 @@
 error_reporting(E_ALL);
 ini_set('display_errors', '0');
 session_start();
-if (!$_SESSION['loggedin'] == true) {
+
+if (!$_SESSION['loggedin'] == true) 
+{
 	##############################################
 	##                                          ##
 	##        LOGIN: method=login               ##
 	##                                          ##
 	##############################################
-	if ($_GET['method'] == "login") {
-		if (isset($_GET['pass']) && isset($_GET['user'])) {
+	if ($_GET['method'] == "login") 
+	{
+		if (isset($_GET['pass']) && isset($_GET['user'])) 
+		{
 			$_SESSION['pass'] = $_GET['pass'];
 			$_SESSION['user'] = $_GET['user'];
 			$_SESSION['database']="edb";
 			$_SESSION['host']="grad-01.spatial.maine.edu";
 			#$_SESSION['host']="localhost";
 			$conn_string="host=".$_SESSION['host']." port=5432 user=".$_SESSION['user']." password=".$_SESSION['pass']." dbname=".$_SESSION['database']."";
-			try {
+			try 
+			{
 				$dbconn = pg_connect($conn_string);
-				if (!$dbconn) {
+				if (!$dbconn) 
+				{
 					throw new Exception('Sorry, could not connect. Check user and pass.');
 				}
 				$_SESSION['loggedin'] = true;
 				echo "Welcome!";
-			} catch (Exception $e) {
+			} 
+			catch (Exception $e) 
+			{
 				echo $e;
 			}
 		}
-	} else {
+	} 
+	else 
+	{
 		echo "you are not logged in";
 	}
-} else {
-$conn_string="host=".$_SESSION['host']." port=5432 user=".$_SESSION['user']." password=".$_SESSION['pass']." dbname=".$_SESSION['database']."";
-$dbconn = pg_connect($conn_string);
+} 
+else 
+{
+	$conn_string="host=".$_SESSION['host']." port=5432 user=".$_SESSION['user']." password=".$_SESSION['pass']." dbname=".$_SESSION['database']."";
+	$dbconn = pg_connect($conn_string);
 }
 
-if (isset($_GET['method'])) {
-
+if (isset($_GET['method'])) 
+{
 	##############################################
 	##                                          ##
 	##        LOGIN: method=logout              ##
 	##                                          ##
 	##############################################
-	if ($_GET['method'] == "logout") {
+	if ($_GET['method'] == "logout") 
+	{
 		$_SESSION['loggedin'] = false;
 		echo "Bye!";
 		
@@ -75,7 +88,9 @@ if (isset($_GET['method'])) {
 	##        RELATION: method=relation         ##
 	##                                          ##
 	##############################################
-	} elseif ($_GET['method'] == "relation" && $dbconn) {
+	}
+	 elseif ($_GET['method'] == "relation" && $dbconn) 
+	 {
 		/* return the pertinent field names these are hard coded because they do double duty as the table names in the database
 		and there is only a select list of tables that are allowed for query, mostly for simplicity.
 		*/
@@ -98,7 +113,9 @@ if (isset($_GET['method'])) {
 	##                    &height=<feet>        	     ##
 	##                                                   ##
 	#######################################################
-	} elseif ($_GET['method'] == "meta" && $dbconn && $_GET['relation']) {
+	} 
+	elseif ($_GET['method'] == "meta" && $dbconn && $_GET['relation'])
+	{
 		/* return the id numbers and descriptors for the given relation.
 		*/
 		if ($_GET['relation']) {
@@ -286,70 +303,109 @@ CASE WHEN to_char(event_occurrence.start, 'MMDD') BETWEEN '0621' AND '0920' THEN
 	##                    &end=		<field>              ##
 	##                                                           ##
 	###############################################################
-	elseif ($_GET['method'] == "data" && $dbconn) {
+	elseif ($_GET['method'] == "data" && $dbconn) 
+	{
 		$q_select = "SELECT event_type.type_id, event_type.measurand_id, source.source_id, unit.unit_id, event_type.medium_id, event_type.transform_id, event_type.condition_id, location.location_id, location.z_value, event_occurrence.instance_id, event_occurrence.start, event_occurrence.end, event_occurrence.magnitude";
 		$q_from = " FROM event_occurrence, generic_event, location, event_type, source, unit";
 		$q_where = " WHERE generic_event.event_id = event_occurrence.event_id AND generic_event.location_id =  location.location_id  AND generic_event.type_id =  event_type.type_id AND event_type.source_id = source.source_id AND event_type.unit_id = unit.unit_id AND group_id IN (SELECT user_group.group_id FROM user_group, user_name WHERE user_group.user_id = user_name.user_id AND user_name.name = (SELECT current_user)) ";
 		
-		if ($_GET['type']) {
-		$q_where = $q_where." AND event_type.type_id IN (".$_GET['type'].")";
+		if ($_GET['type']) 
+		{
+			$q_where = $q_where." AND event_type.type_id IN (".$_GET['type'].")";
 		}
-		if ($_GET['measurand']) {
+
+		if ($_GET['measurand']) 
+		{
 			$q_where = $q_where." AND event_type.measurand_id IN (".$_GET['measurand'].")";
 		}
-		if ($_GET['source']) {
+
+		if ($_GET['source']) 
+		{
 			$q_where = $q_where." AND source.source_id IN (".$_GET['source'].")";
 		}
-		if ($_GET['unit']) {
+
+		if ($_GET['unit']) 
+		{
 			$q_where = $q_where." AND unit.unit_id IN (".$_GET['unit'].")";
 		}
-		if ($_GET['medium']) {
+
+		if ($_GET['medium']) 
+		{
 			$q_where = $q_where." AND event_type.medium_id IN (".$_GET['medium'].")";
 		}
-		if ($_GET['transform']) {
+
+		if ($_GET['transform']) 
+		{
 			$q_where = $q_where." AND event_type.transform_id IN (".$_GET['transform'].")";
 		}
-		if ($_GET['condition']) {
+
+		if ($_GET['condition']) 
+		{
 			$q_where = $q_where." AND event_type.condition_id IN (".$_GET['condition'].")";
 		}
-		if ($_GET['location']) {
+
+		if ($_GET['location']) 
+		{
 			$q_where = $q_where." AND generic_event.location_id IN (".$_GET['location'].")";
 		}
-		if ($_GET['height']) {
+
+		if ($_GET['height']) 
+		{
 			$q_where = $q_where." AND location.z_value IN (".$_GET['height'].")";
 		}
-		if ($_GET['year']) {
+
+		if ($_GET['year']) 
+		{
 			$q_where = $q_where." AND date_part('year', event_occurrence.start) IN (0,".$_GET['year'].")";
-		} 
-		if ($_GET['month']) {
+		}
+
+		if ($_GET['month']) 
+		{
 			$q_where = $q_where." AND date_part('month', event_occurrence.start) IN (0,".$_GET['month'].")";
-		} 
-		if ($_GET['day']) {
+		}
+
+		if ($_GET['day']) 
+		{
 			$q_where = $q_where." AND date_part('day', event_occurrence.start) IN (0,".$_GET['day'].")";
-		} 
-		if ($_GET['start'] || $_GET['end']) {
+		}
+
+		if ($_GET['start'] || $_GET['end']) 
+		{
 			$q_starts = explode(',',$_GET['start']);
 			$q_ends   = explode(',',$_GET['end']);
-			if($_GET['start'] && $_GET['end'] && (count($q_starts) == count($q_ends))) {
+		
+			if($_GET['start'] && $_GET['end'] && (count($q_starts) == count($q_ends))) 
+			{
 				$q_where = $q_where." AND ( FALSE";
-				for($i = 0;$i < count($q_starts); $i++) {
+				
+				for($i = 0;$i < count($q_starts); $i++) 
+				{
 					$q_where = $q_where." OR ";	
 					$q_where = $q_where."(event_occurrence.start >= '".AS3ToMySql($q_starts[$i]).")'";
 					$q_where = $q_where." AND event_occurrence.end <= '".AS3ToMySql($q_ends[$i])."')";
 				}
+				
 				$q_where = $q_where.")";	
-			} else if ($_GET['start'] && (count($q_starts) == 1)) {
+			}
+			else if ($_GET['start'] && (count($q_starts) == 1)) 
+			{
 				$q_where = $q_where." AND event_occurrence.start >= '".AS3ToMySql($_GET['start'],"FIRST")."'";
-			} else if ($_GET['end'] && (count($q_ends) == 1)) {
+			}
+			else if ($_GET['end'] && (count($q_ends) == 1)) 
+			{
 				$q_where = $q_where." AND event_occurrence.end <= '".AS3ToMySql($_GET['end'],"LAST")."'";
-			} else {
+			} 
+			else 
+			{
 				//Error of some kind
+				//TODO maybe do something about this (some sort of feedback)
 			}
 		}
 		
 		$q_count = $q_select.$q_from.$q_where;
 		
-		if ($_GET['season']) {
+		if ($_GET['season']) 
+		{
 		
 			$drop = "DROP TABLE temp;";
 			pg_query($dbconn, $drop);
@@ -372,29 +428,36 @@ CASE WHEN to_char(event_occurrence.start, 'MMDD') BETWEEN '0621' AND '0920' THEN
 			//echo $q_option;
 		}
 		
-		
-		
 		$tuples = pg_fetch_all(pg_query($dbconn, $q_count));
 		
-		if ($tuples) {
+		if ($tuples) 
+		{
 			$i = 0;
 			$heads = array ('type_id', 'measurand_id', 'source_id', 'unit_id', 'medium_id', 'transform_id', 'condition_id', 'location_id', 'z_value');
 			$tails = array ('instance_id', 'start', 'end', 'magnitude');
-			foreach ($tuples as $tuple => $keys) {
-				if ($i == 0) {
+			foreach ($tuples as $tuple => $keys) 
+			{
+				if ($i == 0) 
+				{
 					$header = array ();
-					foreach ($heads as $head) {
-						foreach ($keys as $key => $value) {
-							if ($head == $key) {
+					foreach ($heads as $head) 
+					{
+						foreach ($keys as $key => $value) 
+						{
+							if ($head == $key) 
+							{
 								$header[$head] = $value;
 							}	
 						}
 					}
 					
 					$tailer = array();
-					foreach ($tails as $tail) {
-						foreach ($keys as $key => $value) {
-							if ($key == 'start') {
+					foreach ($tails as $tail) 
+					{
+						foreach ($keys as $key => $value) 
+						{
+							if ($key == 'start') 
+							{
 								$tailer[$tail] = $value;
 								$keywords = preg_split("/ /", $value);
 								$date = preg_split("/-/", $keywords[0]);
@@ -402,7 +465,8 @@ CASE WHEN to_char(event_occurrence.start, 'MMDD') BETWEEN '0621' AND '0920' THEN
 								$tailer['month'] = $date[1];
 								$tailer['day'] = $date[2];
 							}
-							elseif ($tail == $key) {
+							elseif ($tail == $key) 
+							{
 								$tailer[$tail] = $value;
 							}
 							
@@ -413,20 +477,28 @@ CASE WHEN to_char(event_occurrence.start, 'MMDD') BETWEEN '0621' AND '0920' THEN
 					$data[$i]['occurrence'][] = $tailer;
 					$i = $i + 1;
 					
-				} else {
+				}
+				else 
+				{
 					$header = array ();
-					foreach ($heads as $head) {
-						foreach ($keys as $key => $value) {
-							if ($head == $key) {
+					foreach ($heads as $head) 
+					{
+						foreach ($keys as $key => $value) 
+						{
+							if ($head == $key) 
+							{
 								$header[$head] = $value;
 							}	
 						}
 					}
 					
 					$tailer = array();
-					foreach ($tails as $tail) {
-						foreach ($keys as $key => $value) {
-							if ($key == 'start') {
+					foreach ($tails as $tail) 
+					{
+						foreach ($keys as $key => $value) 
+						{
+							if ($key == 'start') 
+							{
 								$tailer[$tail] = $value;
 								$keywords = preg_split("/ /", $value);
 								$date = preg_split("/-/", $keywords[0]);
@@ -434,7 +506,8 @@ CASE WHEN to_char(event_occurrence.start, 'MMDD') BETWEEN '0621' AND '0920' THEN
 								$tailer['month'] = $date[1];
 								$tailer['day'] = $date[2];
 							}
-							elseif ($tail == $key) {
+							elseif ($tail == $key) 
+							{
 								$tailer[$tail] = $value;
 							}
 						}
@@ -442,15 +515,18 @@ CASE WHEN to_char(event_occurrence.start, 'MMDD') BETWEEN '0621' AND '0920' THEN
 					
 					$found = 0;
 					
-					for ($j=0; $j < $i; $j++) {
-						if ( $data[$j]['header'] == $header) {
+					for ($j=0; $j < $i; $j++) 
+					{
+						if ( $data[$j]['header'] == $header) 
+						{
 							$data[$j]['occurrence'][] = $tailer;
 							$found = 1;
 							break;
 						} 
 						
 					}
-					if ($found == 0) {
+					if ($found == 0) 
+					{
 						$data[$i]['header'] = $header;
 						$data[$i]['occurrence'][] = $tailer;
 						$i = $i + 1; 
@@ -474,85 +550,110 @@ CASE WHEN to_char(event_occurrence.start, 'MMDD') BETWEEN '0621' AND '0920' THEN
 	##                    &height=		<ids>              ##
 	##                                                         ##
 	#############################################################
-	elseif ($_GET['method'] == "option" || $_GET['method'] == "options" && $dbconn) {
-	
+	elseif ($_GET['method'] == "option" || $_GET['method'] == "options" && $dbconn) 
+	{
 		#########################################################################
 		## this section returns the full list of options as a list of id numbers
 	
 		$q_from = " FROM event_occurrence, generic_event, location, event_type, source, unit";
 		$q_where = " WHERE generic_event.event_id = event_occurrence.event_id AND generic_event.location_id =  location.location_id  AND generic_event.type_id =  event_type.type_id AND event_type.source_id = source.source_id AND event_type.unit_id = unit.unit_id  AND group_id IN (SELECT user_group.group_id FROM user_group, user_name WHERE user_group.user_id = user_name.user_id AND user_name.name = (SELECT current_user)) ";
 		
-		if ($_GET['relation']) {
+		if ($_GET['relation']) 
+		{
 			$rel = $_GET['relation'];
 			$field = $rel;
-			if (in_array($rel, array('medium','transform','condition','measurand'))) {
+			if (in_array($rel, array('medium','transform','condition','measurand'))) 
+			{
 				$table = 'event_type';
-			} elseif (in_array($rel, array('time'))) {
-				if (! $_GET['period']) {
-				header('Content-type: application/json');
-				echo json_encode(array(array('period'=>'year'),array('period'=>'season'),array('period'=>'month'),array('period'=>'day') ));
-				return;
+			}
+			elseif (in_array($rel, array('time'))) 
+			{
+				if (! $_GET['period']) 
+				{
+					header('Content-type: application/json');
+					echo json_encode(array(array('period'=>'year'),array('period'=>'season'),array('period'=>'month'),array('period'=>'day') ));
+					return;
 				}
-			} else {
+			}
+			else
+			{
 				$table = $rel;
 			}
-			if (in_array($rel, array('event_type'))) {
+			if (in_array($rel, array('event_type'))) 
+			{
 				$field = "type_id";
 				$q_select = "SELECT DISTINCT ON (".$table.".".$field.") ".$table.".".$field."";
 				
-			} elseif (in_array($rel, array('height'))) {
+			}
+			elseif (in_array($rel, array('height'))) 
+			{
+				$table = "location";
+				$field = "location_id";
+				$q_select = "SELECT DISTINCT ON (".$table.".".$field.") ".$table.".".$field."";
+			}
+			elseif (in_array($rel, array('location'))) 
+			{
 				$table = "location";
 				$field = "location_id";
 				$q_select = "SELECT DISTINCT ON (".$table.".".$field.") ".$table.".".$field."";
 				
-			} elseif (in_array($rel, array('location'))) {
-				$table = "location";
-				$field = "location_id";
-				$q_select = "SELECT DISTINCT ON (".$table.".".$field.") ".$table.".".$field."";
-				
-			} elseif (in_array($rel, array('time'))) {
+			}
+			elseif (in_array($rel, array('time'))) 
+			{
 				$table = "event_occurrence";
 				$field = "start";
 				$q_select = "SELECT DISTINCT ON (".$table.".".$field.") ".$table.".".$field." as datum";
 				
-			} else {
+			}
+			else
+			{
 				$field = $rel."_id";
-				$q_select = "SELECT DISTINCT ON (".$table.".".$field.") ".$table.".".$field."";
-				
+				$q_select = "SELECT DISTINCT ON (".$table.".".$field.") ".$table.".".$field."";	
 			}
 		}
 		
-		if ($_GET['measurand']) {
+		if ($_GET['measurand']) 
+		{
 			$q_where = $q_where." AND event_type.measurand_id IN (".$_GET['measurand'].")";
 		}
-		if ($_GET['source']) {
+		if ($_GET['source']) 
+		{
 			$q_where = $q_where." AND source.source_id IN (".$_GET['source'].")";
 		}
-		if ($_GET['unit']) {
+		if ($_GET['unit']) 
+		{
 			$q_where = $q_where." AND unit.unit_id IN (".$_GET['unit'].")";
 		}
-		if ($_GET['medium']) {
+		if ($_GET['medium']) 
+		{
 			$q_where = $q_where." AND event_type.medium_id IN (".$_GET['medium'].")";
 		}
-		if ($_GET['transform']) {
+		if ($_GET['transform']) 
+		{
 			$q_where = $q_where." AND event_type.transform_id IN (".$_GET['transform'].")";
 		}
-		if ($_GET['condition']) {
+		if ($_GET['condition']) 
+		{
 			$q_where = $q_where." AND event_type.condition_id IN (".$_GET['condition'].")";
 		}
-		if ($_GET['location']) {
+		if ($_GET['location']) 
+		{
 			$q_where = $q_where." AND generic_event.location_id IN (".$_GET['location'].")";
 		}
-		if ($_GET['height']) {
+		if ($_GET['height']) 
+		{
 			$q_where = $q_where." AND location.z_value IN (".$_GET['height'].")";
 		}
-		if ($_GET['type']) {
+		if ($_GET['type']) 
+		{
 			$q_where = $q_where." AND event_type.type_id IN (".$_GET['event_type'].")";
 		} 
-		if ($_GET['start']) {
+		if ($_GET['start']) 
+		{
 			$q_where = $q_where." AND event_occurrence.start>='".$_GET['start']."'";
 		} 
-		if ($_GET['end']) {
+		if ($_GET['end']) 
+		{
 			$q_where = $q_where." AND event_occurrence.end<='".$_GET['end']."'";
 		}
 		
@@ -564,20 +665,23 @@ CASE WHEN to_char(event_occurrence.start, 'MMDD') BETWEEN '0621' AND '0920' THEN
 		# this runs very slow when there is only 1 value in the IN (...) condition, but more than one works fine
 		# hence the "0"
 		
-		if ($_GET['year']) {
+		if ($_GET['year']) 
+		{
 			$q_where = $q_where." AND date_part('year', event_occurrence.start) IN (0,".$_GET['year'].")";
 		} 
-		if ($_GET['month']) {
+		if ($_GET['month']) 
+		{
 			$q_where = $q_where." AND date_part('month', event_occurrence.start) IN (0,".$_GET['month'].")";
 		} 
-		if ($_GET['day']) {
+		if ($_GET['day']) 
+		{
 			$q_where = $q_where." AND date_part('day', event_occurrence.start) IN (0,".$_GET['day'].")";
 		} 
 		
 		$q_option = $q_select.$q_from.$q_where;
 
-		if ($_GET['season']) {
-		
+		if ($_GET['season']) 
+		{
 			$drop = "DROP TABLE temp;";
 			pg_query($dbconn, $drop);
 			
@@ -602,7 +706,8 @@ CASE WHEN to_char(event_occurrence.start, 'MMDD') BETWEEN '0621' AND '0920' THEN
 		$_option = pg_fetch_all(pg_query($dbconn, $q_option));
 		
 		## if there's not data, then don't continue
-		if (count($_option, COUNT_RECURSIVE) <= 1) {
+		if (count($_option, COUNT_RECURSIVE) <= 1) 
+		{
 			return;
 		}
 		
@@ -613,11 +718,14 @@ CASE WHEN to_char(event_occurrence.start, 'MMDD') BETWEEN '0621' AND '0920' THEN
 		## now that we have the id numbers, return the options in a json array
 		## time is an exception, we don't use ids there
 		
-		if (in_array($rel, array('event_type'))) {
+		if (in_array($rel, array('event_type'))) 
+		{
 			$q_spec = "SELECT * FROM (SELECT DISTINCT ON (".$rel.".type_id) ".$rel.".type_id, ".$rel.".name FROM ".$rel." WHERE ".$rel.".type_id in (".multi_implode(',',$_option).")) AS data ORDER BY data.name";
-			
-		} elseif (in_array($rel, array('time')) && $_GET['period']) {
-			if ($_GET['period'] == 'season') {
+		} 
+		elseif (in_array($rel, array('time')) && $_GET['period']) 
+		{
+			if ($_GET['period'] == 'season') 
+			{
 				$q_spec = "SELECT DISTINCT ON (season)
 	CASE WHEN to_char(datum, 'MMDD') BETWEEN '0621' AND '0920' THEN 'summer'
 	     WHEN to_char(datum, 'MMDD') BETWEEN '0921' AND '1220' THEN 'fall'
@@ -628,21 +736,27 @@ CASE WHEN to_char(event_occurrence.start, 'MMDD') BETWEEN '0621' AND '0920' THEN
 
 FROM (".$q_option.") S ORDER BY 1";
 				
-			} elseif ($_GET['period'] == 'year') {
+			}
+			elseif ($_GET['period'] == 'year') 
+			{
 				$q_spec = "SELECT DISTINCT ON (year) date_part('year', S.datum) as year
 				FROM (".$q_option.") S ORDER BY 1";
-			
-			} elseif ($_GET['period'] == 'month') {
+			} 
+			elseif ($_GET['period'] == 'month')
+			{
 				$q_spec = "SELECT DISTINCT ON (month) date_part('month', S.datum) as month
 				FROM (".$q_option.") S ORDER BY 1";
 			
-			} elseif ($_GET['period'] == 'day') {
+			}
+			elseif ($_GET['period'] == 'day') 
+			{
 				$q_spec = "SELECT DISTINCT ON (day) date_part('day', S.datum) as day
 				FROM (".$q_option.") S ORDER BY 1";
-			
 			}
 		
-		} elseif (in_array($rel, array('location'))) {
+		} 
+		elseif (in_array($rel, array('location'))) 
+		{
 			$q_spec = "SELECT * FROM (SELECT DISTINCT ON (location.location_id) location.location_id, nm.name, nm.description 
 FROM location, 
 
@@ -653,12 +767,15 @@ WHERE st_force_2d(location.location) = st_force_2d(nm.location)
 
 AND location.location_id in (".multi_implode(',',$_option).")) AS data ORDER BY data.name";
 
-		} elseif (in_array($rel, array('height'))) {
+		} 
+		elseif (in_array($rel, array('height'))) 
+		{
 			$q_spec = "SELECT * FROM (SELECT DISTINCT ON (location.z_value) location.z_value as height FROM location WHERE location.location_id in (".multi_implode(',',$_option).")) AS data ORDER BY data.height";
 			
-		} else {
+		}
+		else 
+		{
 			$q_spec = "SELECT * FROM (SELECT DISTINCT ON (".$rel.".".$rel."_id) ".$rel.".".$rel."_id, ".$rel.".name FROM ".$rel." WHERE ".$rel.".".$rel."_id in (".multi_implode(',',$_option).")) AS data ORDER BY data.name";
-			
 		}
 		//echo $q_spec;
 		
@@ -667,30 +784,37 @@ AND location.location_id in (".multi_implode(',',$_option).")) AS data ORDER BY 
 		##################################################################
 		## for the location options there is some other formatting needed
 		
-		if (in_array($rel, array('location'))) {
+		if (in_array($rel, array('location'))) 
+		{
 			// for locations with matching 2D names, collect up the location ids under each unique name/description
 			// this process relies on the names being in lexical order
 			//print_r($_spec);
 			//$loc = array('name','description','locations'=>'1,2,3');
 			$name = '';
-			foreach ($_spec as $key => $value) {
+			foreach ($_spec as $key => $value) 
+			{
 				$new_name = $value['name'];
-				if ($new_name != $name) {
+
+				if ($new_name != $name) 
+				{
 					$locs[$new_name] = array('description' => $value['description'], 'locations' => array());
 					$name = $new_name;
 				}
+
 				$location = $value['location_id'];
 				$locs[$new_name]['locations'][] = $location;
 			}
 			
 			$_spec = array();
-			foreach ($locs as $loc => $val) {
+			foreach ($locs as $loc => $val) 
+			{
 				$l = "".multi_implode(',',$locs[$loc]['locations']);
 				$_spec[] = array('name' => $loc, 'description' => $locs[$loc]['description'], 'locations' => $l);
 			}
 		}
 		
-		if ($_option) {
+		if ($_option) 
+		{
 			header('Content-type: application/json');
 			echo json_encode($_spec);
 			//echo $q_option;
@@ -711,7 +835,8 @@ AND location.location_id in (".multi_implode(',',$_option).")) AS data ORDER BY 
 	##                    &height=		<ids>                  ##
 	##                                                         ##
 	#############################################################
-	elseif ($_GET['method'] == "timerange" && $dbconn) {
+	elseif ($_GET['method'] == "timerange" && $dbconn) 
+	{
 		$q_select = "(SELECT event_occurrence.instance_id, event_occurrence.start, event_occurrence.end, event_occurrence.magnitude ";
 		$q_from = "FROM event_occurrence, generic_event, location, event_type, source, location_source_name, unit ";
 		$q_where = "WHERE generic_event.event_id = event_occurrence.event_id AND generic_event.location_id =  location.location_id  AND generic_event.type_id =  event_type.type_id AND location.location_id = location_source_name.location_id AND location_source_name.source_id = source.source_id AND event_type.unit_id = unit.unit_id  AND group_id IN (SELECT user_group.group_id FROM user_group, user_name WHERE user_group.user_id = user_name.user_id AND user_name.name = (SELECT current_user)) ";
@@ -719,45 +844,66 @@ AND location.location_id in (".multi_implode(',',$_option).")) AS data ORDER BY 
 		$q_orderlimit_last  = "ORDER BY event_occurrence.end DESC LIMIT 1) ";
 		$q_union = "UNION ALL \n";
 		
-		if ($_GET['type']) {
+		if ($_GET['type']) 
+		{
 			$q_where = $q_where." AND event_type.type_id IN (".$_GET['event_type'].") ";
 		}
 		
-		if ($_GET['measurand']) {
+		if ($_GET['measurand']) 
+		{
 			$q_where = $q_where." AND event_type.measurand_id IN (".$_GET['measurand'].") ";
 		}
-		if ($_GET['source']) {
+
+		if ($_GET['source']) 
+		{
 			$q_where = $q_where." AND source.source_id IN (".$_GET['source'].") ";
 		}
-		if ($_GET['unit']) {
+		
+		if ($_GET['unit']) 
+		{
 			$q_where = $q_where." AND unit.unit_id IN (".$_GET['unit'].") ";
 		}
-		if ($_GET['medium']) {
+		
+		if ($_GET['medium']) 
+		{
 			$q_where = $q_where." AND event_type.medium_id IN (".$_GET['medium'].") ";
 		}
-		if ($_GET['transform']) {
+		
+		if ($_GET['transform']) 
+		{
 			$q_where = $q_where." AND event_typet.transform_id IN (".$_GET['transform'].") ";
 		}
-		if ($_GET['condition']) {
+		
+		if ($_GET['condition']) 
+		{
 			$q_where = $q_where." AND event_type.condition_id IN (".$_GET['condition'].") ";
 		}
-		if ($_GET['location']) {
+		
+		if ($_GET['location']) 
+		{
 			$q_where = $q_where." AND generic_event.location_id IN (".$_GET['location'].") ";
 		}
-		if ($_GET['height']) {
+		
+		if ($_GET['height']) 
+		{
 			$q_where = $q_where." AND location.z_value IN (".$_GET['height'].") ";
 		}
-		if ($_GET['start']) {
+		
+		if ($_GET['start']) 
+		{
 			$q_where = $q_where." AND event_occurrence.start >= '".AS3ToMySql($_GET['start'],"FIRST")."' ";
 		}
-		if ($_GET['end']) {
+		
+		if ($_GET['end']) 
+		{
 			$q_where = $q_where." AND event_occurrence.end <= '".AS3ToMySql($_GET['end'],"LAST")."' ";
 		}
 		
 		$q_timerange = $q_select.$q_from.$q_where.$q_orderlimit_first.$q_union.$q_select.$q_from.$q_where.$q_orderlimit_last;
 		
 		$_timerange = pg_fetch_all(pg_query($dbconn, $q_timerange));
-		if ($_timerange) {
+		if ($_timerange) 
+		{
 			header('Content-type: application/json');
 			echo json_encode($_timerange);
 		} //if the location names query was successful
@@ -768,43 +914,45 @@ AND location.location_id in (".multi_implode(',',$_option).")) AS data ORDER BY 
 	##           &location= <ids>			           ##
 	##                                                         ##
 	#############################################################
-	} elseif ($_GET['method'] == "spatial" && $dbconn) {
-	
-		if ($_GET['operation'] == 'intersect' || $_GET['operation'] == 'intersects') {
-	
-			$q_select = "SELECT DISTINCT ON (location.location_id) location_source_name.name, location.location_id ";
-			
-			$q_from = "FROM location, location_source_name, (SELECT location_id FROM location_source_name WHERE lower(name) LIKE lower('%".$_GET['location']."%')) AS st ";
-			
-			$q_where = "WHERE location.location_id = location_source_name.location_id AND intersects((SELECT location FROM location WHERE location_id = st.location_id), location.location)";
-			
-			$q_option = $q_select.$q_from.$q_where;
-			
-			$_option = pg_fetch_all(pg_query($dbconn, $q_option));
-			if ($_option) {
-				header('Content-type: application/json');
-				echo json_encode($_option);
-			} //if the location names query was successful
-		
-		} elseif ($_GET['operation'] == 'contain' || $_GET['operation'] == 'contains') {
-		
-			$q_select = "SELECT DISTINCT ON (location.location_id) location_source_name.name, location.location_id ";
-			
-			$q_from = "FROM location, location_source_name, (SELECT location_id FROM location_source_name WHERE lower(name) LIKE lower('%".$_GET['location']."%')) AS st ";
-			
-			$q_where = "WHERE location.location_id = location_source_name.location_id AND contains((SELECT location FROM location WHERE location_id = st.location_id), location.location)";
-			
-			$q_option = $q_select.$q_from.$q_where;
-			
-			$_option = pg_fetch_all(pg_query($dbconn, $q_option));
-			if ($_option) {
-				header('Content-type: application/json');
-				echo json_encode($_option);
-			} //if the location names query was successful
-		
-		} elseif ($_GET['operation'] == 'difference') {
-		
-		}
+		} 
+		elseif ($_GET['method'] == "spatial" && $dbconn) 
+		{
+			if ($_GET['operation'] == 'intersect' || $_GET['operation'] == 'intersects') 
+			{
+				$q_select = "SELECT DISTINCT ON (location.location_id) location_source_name.name, location.location_id ";
+				$q_from = "FROM location, location_source_name, (SELECT location_id FROM location_source_name WHERE lower(name) LIKE lower('%".$_GET['location']."%')) AS st ";
+				$q_where = "WHERE location.location_id = location_source_name.location_id AND intersects((SELECT location FROM location WHERE location_id = st.location_id), location.location)";
+				$q_option = $q_select.$q_from.$q_where;
+				
+				$_option = pg_fetch_all(pg_query($dbconn, $q_option));
+
+				if ($_option) 
+				{
+					header('Content-type: application/json');
+					echo json_encode($_option);
+				} //if the location names query was successful
+			} 
+
+			elseif ($_GET['operation'] == 'contain' || $_GET['operation'] == 'contains') 
+			{
+				$q_select = "SELECT DISTINCT ON (location.location_id) location_source_name.name, location.location_id ";
+				$q_from = "FROM location, location_source_name, (SELECT location_id FROM location_source_name WHERE lower(name) LIKE lower('%".$_GET['location']."%')) AS st ";
+				$q_where = "WHERE location.location_id = location_source_name.location_id AND contains((SELECT location FROM location WHERE location_id = st.location_id), location.location)";
+				$q_option = $q_select.$q_from.$q_where;
+				
+				$_option = pg_fetch_all(pg_query($dbconn, $q_option));
+				
+				if ($_option) 
+				{
+					header('Content-type: application/json');
+					echo json_encode($_option);
+				} //if the location names query was successful
+			} 
+
+			elseif ($_GET['operation'] == 'difference') 
+			{
+				//TODO: this sure looks like functionality, doesn't it
+			}
 	#############################################################
 	##                                                         ##
 	##        RELATION: method=getChildren                     ## removeParent, addParent, getChild, getLocationTree
@@ -813,115 +961,116 @@ AND location.location_id in (".multi_implode(',',$_option).")) AS data ORDER BY 
 	##                    &includeSelectorsEvents= yes | no    ##
 	##                                                         ##
 	#############################################################
-	} elseif (strtolower($_GET['method']) == "getchildren" && $dbconn) {
+		} 
+		elseif (strtolower($_GET['method']) == "getchildren" && $dbconn) 
+		{
+			$contains = "'0', '1'";
 		
-		$contains = "'0', '1'";
-		
-		if (isset($_GET['operation'])) {
-			if ($_GET['operation'] == 'contains') {
-				$contains = "'1'";
-			} elseif ($_GET['operation'] == 'contains') {
-				$contains = "'0', '1'";
+			if (isset($_GET['operation'])) {
+				if ($_GET['operation'] == 'contains') {
+					$contains = "'1'";
+				} elseif ($_GET['operation'] == 'contains') {
+					$contains = "'0', '1'";
+				}
 			}
-		}
+			
+			if (isset($_GET['selector'])) {
+				// return a location name, height, and location_id for point locations
+				$select = "SELECT DISTINCT ON (location_intersect.location_id) location_intersect.location_id, location_source_name.name, st_dimension(location.location) as dim, location_source_name.description ";
+				$from = "FROM location, location_source_name, location_intersect ";
+				$where = "WHERE location_intersect.selector_id IN (".$_GET['selector'].") AND location.location_id = location_source_name.location_id " ;
+				$where = $where."AND location.location_id = location_intersect.location_id AND location_intersect.contains IN (".$contains.") ";
+				$order = "ORDER BY location_intersect.location_id;";
+				
+				$query = $select.$from.$where.$order;
+				
+				$_option = pg_fetch_all(pg_query($dbconn, $query));
+			}
+			
+			if ($_option) {
+				// set up an array for holding replacement locations, with heights, for the 0-dimension geometries
+				$heights[] = array();
+				foreach ($_option as $key => $value) {
+					if ($value['dim'] == 0) {
+						unset($_heights);
+						$select = "SELECT DISTINCT ON (height) location.location_id, st_z(location) as height, st.name||' '||st_z(location)||' m' as name, st.description ";
+						$from = "FROM location, (SELECT location_id, name, description FROM location_source_name WHERE name LIKE '".$value['name']."%') AS st  ";
+						$where = "WHERE location.location_id <> st.location_id ";
+						$where = $where."AND (SELECT st_force_2d(location) FROM location WHERE location_id = st.location_id) = location.location ";
+						$order = "ORDER BY height DESC;";
+						
+						$query = $select.$from.$where.$order;
+				
+						$_heights = pg_fetch_all(pg_query($dbconn, $query));
+						
+						if (is_array($_heights)) {
+							// then pop out this key and add the data from the _heights array into heights
+							unset($_option[$key]);
+							foreach ($_heights as $_height => $_h) {
+								$heights[] = $_h;
+							}
+							
+						}
+					}
+				}
+				foreach ($heights as $height => $h) {
+					$_option[] = $h;
+				}
+				if (($_GET['includeSelectorsEvents'] == 'yes') || ($_GET['includeselectorsevents']) == 'yes') {
+					// return a location name, height, and location_id for point locations
+					$select = "SELECT location.location_id, location_source_name.name, location_source_name.description ";
+					$from = "FROM location, location_source_name ";
+					$where = "WHERE location.location_id IN (".$_GET['selector'].") AND location.location_id = location_source_name.location_id " ;
+					$order = "ORDER BY location.location_id;";
+					
+					$query = $select.$from.$where.$order;
+					
+					$selectors = pg_fetch_all(pg_query($dbconn, $query));
+					
+					foreach ($selectors as $key => $s) {
+						array_unshift($_option, $s);
+					}
+				}
+				header('Content-type: application/json');
+				echo json_encode($_option);
+				//echo print_r($_option);
+			} //if the location names query was successful
 		
-		if (isset($_GET['selector'])) {
+		#############################################################
+		##                                                         ##
+		##        RELATION: method=getEventLatLong                 ## 
+		##                    &event_id=	    <ids>           ##
+		##                                                         ##
+		#############################################################
+		} elseif (strtolower($_GET['method']) == "geteventlatlong" && $dbconn) {	
+		
+			if (isset($_GET['event_id'])) {
+				$contains = $contains." AND generic_event.event_id IN (".$_GET['event_id'].") ";
+			} else {
+				$contains = " ";
+			}
+
 			// return a location name, height, and location_id for point locations
-			$select = "SELECT DISTINCT ON (location_intersect.location_id) location_intersect.location_id, location_source_name.name, st_dimension(location.location) as dim, location_source_name.description ";
-			$from = "FROM location, location_source_name, location_intersect ";
-			$where = "WHERE location_intersect.selector_id IN (".$_GET['selector'].") AND location.location_id = location_source_name.location_id " ;
-			$where = $where."AND location.location_id = location_intersect.location_id AND location_intersect.contains IN (".$contains.") ";
-			$order = "ORDER BY location_intersect.location_id;";
+			$select = "SELECT st_xmin(location.location) as lat, st_ymin(location.location) as long, location.location_id, generic_event.event_id ";
+			$from = "FROM location, generic_event ";
+			$where = "WHERE location.location_id = generic_event.location_id " ;
+			$where = $where.$contains;
+			$order = "ORDER BY location.location_id;";
 			
 			$query = $select.$from.$where.$order;
 			
 			$_option = pg_fetch_all(pg_query($dbconn, $query));
-		}
-		
-		if ($_option) {
-			// set up an array for holding replacement locations, with heights, for the 0-dimension geometries
-			$heights[] = array();
-			foreach ($_option as $key => $value) {
-				if ($value['dim'] == 0) {
-					unset($_heights);
-					$select = "SELECT DISTINCT ON (height) location.location_id, st_z(location) as height, st.name||' '||st_z(location)||' m' as name, st.description ";
-					$from = "FROM location, (SELECT location_id, name, description FROM location_source_name WHERE name LIKE '".$value['name']."%') AS st  ";
-					$where = "WHERE location.location_id <> st.location_id ";
-					$where = $where."AND (SELECT st_force_2d(location) FROM location WHERE location_id = st.location_id) = location.location ";
-					$order = "ORDER BY height DESC;";
-					
-					$query = $select.$from.$where.$order;
 			
-					$_heights = pg_fetch_all(pg_query($dbconn, $query));
-					
-					if (is_array($_heights)) {
-						// then pop out this key and add the data from the _heights array into heights
-						unset($_option[$key]);
-						foreach ($_heights as $_height => $_h) {
-							$heights[] = $_h;
-						}
-						
-					}
-				}
-			}
-			foreach ($heights as $height => $h) {
-				$_option[] = $h;
-			}
-			if (($_GET['includeSelectorsEvents'] == 'yes') || ($_GET['includeselectorsevents']) == 'yes') {
-				// return a location name, height, and location_id for point locations
-				$select = "SELECT location.location_id, location_source_name.name, location_source_name.description ";
-				$from = "FROM location, location_source_name ";
-				$where = "WHERE location.location_id IN (".$_GET['selector'].") AND location.location_id = location_source_name.location_id " ;
-				$order = "ORDER BY location.location_id;";
-				
-				$query = $select.$from.$where.$order;
-				
-				$selectors = pg_fetch_all(pg_query($dbconn, $query));
-				
-				foreach ($selectors as $key => $s) {
-					array_unshift($_option, $s);
-				}
-			}
 			header('Content-type: application/json');
 			echo json_encode($_option);
-			//echo print_r($_option);
-		} //if the location names query was successful
-	
-	#############################################################
-	##                                                         ##
-	##        RELATION: method=getEventLatLong                 ## 
-	##                    &event_id=	    <ids>           ##
-	##                                                         ##
-	#############################################################
-	} elseif (strtolower($_GET['method']) == "geteventlatlong" && $dbconn) {	
-	
-		if (isset($_GET['event_id'])) {
-			$contains = $contains." AND generic_event.event_id IN (".$_GET['event_id'].") ";
-		} else {
-			$contains = " ";
-		}
-
-		// return a location name, height, and location_id for point locations
-		$select = "SELECT st_xmin(location.location) as lat, st_ymin(location.location) as long, location.location_id, generic_event.event_id ";
-		$from = "FROM location, generic_event ";
-		$where = "WHERE location.location_id = generic_event.location_id " ;
-		$where = $where.$contains;
-		$order = "ORDER BY location.location_id;";
 		
-		$query = $select.$from.$where.$order;
-		
-		$_option = pg_fetch_all(pg_query($dbconn, $query));
-		
-		header('Content-type: application/json');
-		echo json_encode($_option);
-	
-	#############################################################
-	##                                                         ##
-	##        RELATION: method=getLocLatLong                   ## 
-	##                    &location_id=	    <ids>           ##
-	##                                                         ##
-	#############################################################
-	} elseif (strtolower($_GET['method']) == "getloclatlong" && $dbconn) {	
+		#############################################################
+		##                                                         ##
+		##        RELATION: method=getLocLatLong                   ## 
+		##                    &location_id=	    <ids>           ##
+		##                                                         ##
+		#############################################################
+		} elseif (strtolower($_GET['method']) == "getloclatlong" && $dbconn) {	
 	
 		if (isset($_GET['location_id'])) {
 			$where = "WHERE location.location_id IN (".$_GET['location_id'].") ";
