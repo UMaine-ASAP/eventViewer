@@ -13,26 +13,29 @@
 <script>
 
 $(document).ready(function() {
+	//once the DOM is built, send credentials to the eventviewer server
 	var user = "phog";
 	var pass = "phog1";
 
 	var dataString = "method=login&user=" + user + "&pass=" + pass;
-
+	//use ajax to post the datastring via get.php, which should log us in
 	$.ajax({
 		type: "GET",
 		url: "get.php",
 		data: dataString,
 		success: function(data) {
+			//on success, log the script's response to the console
 			console.log(data);
 		}
 	})
 
 })
-
+	//jquery UI -- set up our tabs
 	$(function() {
 		$( "#tabs" ).tabs({
 			cache: true,
 			ajaxOptions: {
+				//in case there's an error, display an extremely helpful message
 				error: function( xhr, status, index, anchor ) {
 					$( anchor.hash ).html(
 						"Couldn't load this tab. We'll try to fix this as soon as possible. " +

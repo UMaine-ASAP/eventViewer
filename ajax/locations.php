@@ -1,5 +1,6 @@
 <?PHP
 if(!isset($_GET['category'])){
+//if a GET request is sent to this (via AJAX)...
 ?>
 <script>
 $(document).ready(function() {
