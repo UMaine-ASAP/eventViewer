@@ -6,6 +6,7 @@ html, body {
 	float: left;
 	height: 100%;
 }
+
 #builder{
 	width: 50%;
 	height: 100%;
@@ -26,8 +27,7 @@ html, body {
 	height: 200px;
 }
 
-#timespans {
-	width: 75%;
+#daterange_canvas {
 	margin: 0px auto;
 }
 
@@ -35,7 +35,6 @@ html, body {
 	width: 80px;
 }
 
-#chart {
-	width: 500px;
-	border: 1px solid #ccc;
+#space {
+	height: 7px;
 }
