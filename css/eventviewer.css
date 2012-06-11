@@ -25,3 +25,17 @@ html, body {
 .location_container {
 	height: 200px;
 }
+
+#timespans {
+	width: 75%;
+	margin: 0px auto;
+}
+
+#timespans > input {
+	width: 80px;
+}
+
+#chart {
+	width: 500px;
+	border: 1px solid #ccc;
+}

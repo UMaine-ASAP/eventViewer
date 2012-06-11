@@ -5,6 +5,9 @@
 		<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.8.18/jquery-ui.js"></script>
 	
 		<script type="text/javascript" src="js/eventviewer.js"></script>
+		<script type="text/javascript" src="js/raphael-min.js"></script>
+		<script type="text/javascript" src="js/g.raphael-min.js"></script>
+		<script type="text/javascript" src="js/g.bar-min.js"></script>
 		
 		<link href="css/ui-lightness/jquery-ui-1.8.20.custom.css" rel="stylesheet" type="text/css">
 		<link href="css/eventviewer.css" rel="stylesheet" type="text/css">
