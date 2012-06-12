@@ -2,9 +2,35 @@
 ?>
 <script>
 
-var generateBad = function(x, width, paper) {
-	var bad = paper.rect(x, 1, width, 38);
-	bad.attr({fill: '#ccc', stroke: 'none'});
+var badData = [[1960, 1985], [1990, 1995]];
+
+var generateBad = function(paper, badData) {
+	//sample input: badData = [[1960, 1985], [1990, 1995]]
+	for (var i = 0; i < badData.length; i++) {
+		//determine the starting and ending dates of the bad data
+		var start = badData[i][0];
+		var end = badData[i][1];
+
+		//...and the start and end of the year ranges
+		var yearStart = $("#daterange").slider("option", "min");
+		var yearEnd = $("#daterange").slider("option", "max");
+
+		//remember the total span of years between the start and the end
+		var total = (yearEnd - yearStart);
+
+		//now that we have absolute spans of time, convert those into px for the rectangles
+		start = start - yearStart;
+		end = end - yearStart;
+
+		var width = $("#daterange_canvas").width();
+		var startPx = (start / total) * width;
+
+		//draw the rectangle!
+		var endPx = (end / total) * width;
+		var rect = paper.rect(startPx, 0, endPx - startPx, 40);
+
+		rect.attr({fill: 'red'}); //and fill it with red because why on earth not
+	}
 }
 
 $(document).ready(function() {
@@ -27,9 +53,7 @@ $(document).ready(function() {
 	var background = paper.rect(0, 0, width, 40);
 	background.attr({fill: 'green'});
 
-	generateBad(250, 20, paper);
-	generateBad(350, 15, paper);
-	generateBad(100, 8, paper);
+	generateBad(paper, badData);
 });
 
 </script>
