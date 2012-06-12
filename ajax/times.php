@@ -4,7 +4,26 @@
 
 var badData = [[1960, 1985], [1990, 1995]];
 
+var isBadSpan = function(start, end) {
+	for (var i = 0; i < badData.length; i++) {
+		if (badData[i][0] <= start && badData[i][1] >= end) {
+			return true;
+		}
+	}
+
+	return false;
+}
+
 var generateBad = function(paper, badData) {
+
+	//quick sanity check on the data
+	for (var i = 0; i < badData.length; i++) {
+		if (badData[0] > badData[1]) {
+			$("#time_error").show(250);
+			return;
+		}
+	}
+
 	//sample input: badData = [[1960, 1985], [1990, 1995]]
 	for (var i = 0; i < badData.length; i++) {
 		//determine the starting and ending dates of the bad data
@@ -42,6 +61,17 @@ $(document).ready(function() {
 		values: [1978, 1997],
 		slide: function(event, ui) {
 			$("#year").text(ui.values[0] +  "-" + ui.values[1]);
+
+			if (isBadSpan(ui.values[0], ui.values[1])) {
+				if (!$("#selection_error").is(":visible")) {
+					$("#selection_error").show(250);
+				}
+			}
+			else {
+				if ($("#selection_error").is(":visible")) {
+					$("#selection_error").hide(250);
+				}
+			}
 		}
 	});
 
@@ -65,8 +95,10 @@ $(document).ready(function() {
 		<input type="radio" name="timespans" id="radio4"><label for="radio4">Custom</label></input>
 	</div>
 	<label for="year" id="year">If this has no numbers on it, something is wrong!</label>
+	<p class="error" id="time_error">There was an error calculating invalid years.</p>
 	<div id="daterange"></div>
 	<div id="space"></div>
 	<div id="daterange_canvas"></div>
+	<p class="error" id="selection_error">The timespan you have selected contains no events.</p>
 	
 <form>

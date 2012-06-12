@@ -38,3 +38,7 @@ html, body {
 #space {
 	height: 7px;
 }
+
+.error {
+	display: none;
+}
