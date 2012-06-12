@@ -8,6 +8,8 @@
 		<script type="text/javascript" src="js/raphael-min.js"></script>
 		<script type="text/javascript" src="js/g.raphael-min.js"></script>
 		<script type="text/javascript" src="js/g.bar-min.js"></script>
+		<script type="text/javascript" src="js/underscore.js"></script>
+		<script type="text/javascript" src="js/backbone.js"></script>
 		
 		<link href="css/ui-lightness/jquery-ui-1.8.20.custom.css" rel="stylesheet" type="text/css">
 		<link href="css/eventviewer.css" rel="stylesheet" type="text/css">
