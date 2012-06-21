@@ -10,15 +10,11 @@ html, body, .main {
 
 	overflow-y: auto;
 	overflow-x: none;
-
-	background-color: green;
 }
 
 .fixed_side{
 	width: 20%;
 	height: 100%;
-
-	background-color: purple;
 
 	position: fixed;
 	right: 0;
