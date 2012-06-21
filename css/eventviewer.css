@@ -1,0 +1,26 @@
+html, body, .main {
+	padding: 0;
+	margin: 0;
+	height: 100% !important;
+}
+
+.scrollable_main {
+	width: 80%;
+	height: 100%;
+
+	overflow-y: auto;
+	overflow-x: none;
+
+	background-color: green;
+}
+
+.fixed_side{
+	width: 20%;
+	height: 100%;
+
+	background-color: purple;
+
+	position: fixed;
+	right: 0;
+	top: 0;
+}
