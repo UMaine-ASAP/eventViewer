@@ -52,10 +52,15 @@ $("#events_container").accordion({
 							col = 1;
 						}
 					})
+
+					checkBoxes(queryView.collection.toJSON(), clicked);
 						
 						$(".constraint").click(function() {
 							if($(this).is(":checked")){
        							queryView.addConstraint($(this).parent().attr("id"), clicked, $(this).parent().text(), "event");
+        					}
+        					else {
+        						queryView.removeConstraint($(this).parent().attr("id"), $(this).parent().text());
         					}
     					});
 
@@ -68,6 +73,14 @@ $("#events_container").accordion({
 
 	}
 });
+}
+
+function checkBoxes(checked, section){
+	$.each(checked, function(key, value){
+		if(value.id_type == section){
+			$("div." + section).find("li#" + value.id_value).children(".constraint").attr('checked', true);
+		}
+	});
 }
 </script>
 

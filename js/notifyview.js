@@ -41,14 +41,19 @@ Backbone.sync = function(method, model, success, error){
 
 
 		initialize: function(){
-			_.bindAll(this, 'render');
+			_.bindAll(this, 'render', 'unrender');
 
 			this.model.bind('change', this.render);
+			this.model.bind('remove', this.unrender);
 		},
 
 		render: function(){
 			$(this.el).html(this.model.get('name'));
 			return this;
+		},
+
+		unrender: function(){
+			$(this.el).remove();
 		}
 	});
 
@@ -62,7 +67,7 @@ Backbone.sync = function(method, model, success, error){
 		},
 
 		initialize: function() {
-			_.bindAll(this, 'render', 'addConstraint', 'appendQuery');
+			_.bindAll(this, 'render', 'addConstraint', 'removeConstraint', 'appendQuery');
 
 			this.collection = new QueryList();
 			this.collection.bind('add', this.appendQuery);
@@ -93,6 +98,16 @@ Backbone.sync = function(method, model, success, error){
 			console.log("Added new constraint of kind \"" + kind + "\" with name: " + name + ", type: " + type + ", id: " + id)
 		},
 
+		removeConstraint: function(id, name) {
+			var remove = this.collection.where({
+				id_value : id,
+				name : name,
+			});
+
+			this.collection.remove(remove[0]);
+			console.log(this.collection.toJSON());
+		},
+
 		appendQuery: function(constraint) {
 			var list = $(this.el).children("ul");
 
@@ -101,7 +116,7 @@ Backbone.sync = function(method, model, success, error){
 			});
 
 			$(list).last().append(constraintView.render().el);
-		}
+		},
 
 	});
 
