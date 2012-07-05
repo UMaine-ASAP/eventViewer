@@ -76,33 +76,7 @@ $("#events_container").accordion({
 //Stupid function to deal with differing names in ID's
 
 function getid(type, value){
-	if(type == "type"){
-		return value.type_id;
-	}
-	if(type == "measurand"){
-		return value.measurand_id;
-	}
-	if(type == "source"){
-		return value.source_id;
-	}
-	if(type == "unit"){
-		return value.unit_id;
-	}
-	if(type == "transform"){
-		return value.transform_id;
-	}
-	if(type == "condition"){
-		return value.condition_id;
-	}
-	if(type == "location"){
-		return value.location_id;
-	}
-	if(type == "height"){
-		return value.height_id;
-	}
-	if(type == "medium"){
-		return value.medium_id;
-	}
+	return value[type + "_id"];
 }
 
 </script>
