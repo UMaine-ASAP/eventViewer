@@ -26,7 +26,7 @@ html, body, .main {
 	padding-top: 10px;
 }
 
-.query_options {
+.eviewer_container {
 	height: 700px;
 	width: 100%;
 	background-color: green;

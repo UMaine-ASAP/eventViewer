@@ -2,7 +2,7 @@
 <html lang="en">
   <head>
     <meta charset="utf-8">
-    <title>Bootstrap, from Twitter</title>
+    <title>EventViewer</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="">
     <meta name="author" content="">
@@ -54,7 +54,35 @@
     <script src="js/bootstrap-typeahead.js"></script>
 
     <script>
+    var defaultPage = "ajax/events.html";
+
+    var initUI = function() {
+      console.log("initializing ui");
+      $("#query_buttons").buttonset();
+      console.log("all jquery ui elements initialized");
+
+      //make an ajax request to load the default page into the eviewer content div
+      console.log("making initial ajax request");
+      $(".eviewer_container").load(defaultPage);
+      //hook buttons up to their proper events
+      console.log("hooking up events");
+
+      $("#radioEvents").change(function() {
+        console.log("radioEvents change!");
+      });
+
+      $("#radioLocations").change(function() {
+        console.log("radioLocations change!");
+      });
+
+      $("#radioTimes").change(function() {
+        console.log("radioTimes change!");
+      });
+    }
+
     $(document).ready(function() {
+        //initialize the UI
+        initUI();
         //once the DOM is built, send credentials to the eventviewer server
         var user = "phog";
         var pass = "phog1";
@@ -89,17 +117,13 @@
     </div>
       <div class="main">
         <div class="scrollable_main">
-
-
-            <div class="btn-group" data-toggle="buttons-radio" id="query_buttons">
-              <button class="btn active">Events</button>
-              <button class="btn">Locations</button>
-              <button class="btn">Times</button>
+            <div id="query_buttons" class="ui-buttonset">
+              <input type="radio" id="radioEvents" name="radio" checked="checked"/> <label for="radioEvents">Events</label>
+              <input type="radio" id="radioLocations" name="radio" /> <label for="radioLocations">Locations</label>
+              <input type="radio" id="radioTimes" name="radio" /> <label for="radioTimes">Times</label>
             </div>
 
-            <div class="query_options">
-
-
+            <div class="eviewer_container">
             </div>
 
 
@@ -111,14 +135,5 @@
       </div>
 
       <script src="js/notifyview.js"></script>
-      <script type="text/javascript">
-        $(document).ready(function() {
-          $("#slider").slider({
-            min: 0,
-            max: 150,
-            value: 50
-          });
-        });
-      </script>
   </body>
 </html>
