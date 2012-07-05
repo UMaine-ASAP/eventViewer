@@ -59,6 +59,9 @@
     var timesPage = "ajax/times.html";
 
     var initUI = function() {
+      $.ajaxSetup({
+        cache: false
+      })
       var container = $(".eviewer_container");
 
       console.log("initializing ui");
