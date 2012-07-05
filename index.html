@@ -54,29 +54,37 @@
     <script src="js/bootstrap-typeahead.js"></script>
 
     <script>
-    var defaultPage = "ajax/events.html";
+    var eventsPage = "ajax/events.html";
+    var locationsPage = "ajax/locations.html";
+    var timesPage = "ajax/times.html";
 
     var initUI = function() {
+      var container = $(".eviewer_container");
+
       console.log("initializing ui");
       $("#query_buttons").buttonset();
       console.log("all jquery ui elements initialized");
 
       //make an ajax request to load the default page into the eviewer content div
       console.log("making initial ajax request");
-      $(".eviewer_container").load(defaultPage);
+      container.load(eventsPage);
+
       //hook buttons up to their proper events
       console.log("hooking up events");
 
       $("#radioEvents").change(function() {
         console.log("radioEvents change!");
+        container.load(eventsPage);
       });
 
       $("#radioLocations").change(function() {
         console.log("radioLocations change!");
+        container.load(locationsPage);
       });
 
       $("#radioTimes").change(function() {
         console.log("radioTimes change!");
+        container.load(timesPage);
       });
     }
 
