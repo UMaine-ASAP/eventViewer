@@ -24,7 +24,7 @@
  	});
 
 	var QueryList = Backbone.Collection.extend({
-		model: Query
+		model: Constraint
 	});
 
 
