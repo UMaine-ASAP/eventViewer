@@ -63,6 +63,9 @@
       });
 
       var container = $(".eviewer_container");
+      $("#btn-events").button();
+      $("#btn-locations").button();
+      $("#btn-times").button();
 
       //make an ajax request to load the default page into the eviewer content div
       console.log("making initial ajax request");
@@ -88,6 +91,7 @@
     }
 
     $(document).ready(function() {
+        initUI();
         //once the DOM is built, send credentials to the eventviewer server
         var user = "phog";
         var pass = "phog1";
