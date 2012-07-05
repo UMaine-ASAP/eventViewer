@@ -1,15 +1,11 @@
 html, body, .main {
-	padding: 0;
-	margin: 0;
-	height: 100% !important;
 }
 
 .scrollable_main {
 	width: 80%;
-	height: 100%;
-
-	overflow-y: auto;
+	overflow-y: none;
 	overflow-x: none;
+	background-color: purple;
 }
 
 .fixed_side{
@@ -19,4 +15,19 @@ html, body, .main {
 	position: fixed;
 	right: 0;
 	top: 0;
+}
+
+.btn-group {
+	text-align: center;
+}
+#query_buttons {
+	width: 195px;
+	margin: auto;
+	padding-top: 10px;
+}
+
+.query_options {
+	height: 700px;
+	width: 100%;
+	background-color: green;
 }

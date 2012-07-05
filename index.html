@@ -51,6 +51,27 @@
     <script src="js/bootstrap-carousel.js"></script>
     <script src="js/bootstrap-typeahead.js"></script>
 
+    <script>
+    $(document).ready(function() {
+        //once the DOM is built, send credentials to the eventviewer server
+        var user = "phog";
+        var pass = "phog1";
+
+        var dataString = "method=login&user=" + user + "&pass=" + pass;
+        //use ajax to post the datastring via get.php, which should log us in
+        $.ajax({
+                type: "GET",
+                url: "get.php",
+                data: dataString,
+                success: function(data) {
+                        //on success, log the script's response to the console
+                        console.log(data);
+                }
+        })
+
+      })
+    </script>
+
     <!-- Our scripts -->
   </head>
 
@@ -66,9 +87,21 @@
     </div>
       <div class="main">
         <div class="scrollable_main">
-          
-        </div>
 
+
+            <div class="btn-group" data-toggle="buttons-radio" id="query_buttons">
+              <button class="btn active">Events</button>
+              <button class="btn">Locations</button>
+              <button class="btn">Times</button>
+            </div>
+
+            <div class="query_options">
+
+
+            </div>
+
+
+        </div>
         <div class="fixed_side">
           <div id="notify-box"></div>
         </div>
