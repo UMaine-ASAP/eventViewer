@@ -15,11 +15,11 @@
 
  	var Constraint = Backbone.Model.extend({
  		defaults: {
- 			kind: '';
- 			id_type: '';
- 			id_value: '';
- 			name: 'test';
- 			description: '';
+ 			kind: '',
+ 			id_type: '',
+ 			id_value: '',
+ 			name: 'test',
+ 			description: ''
  		}
  	});
 
@@ -54,7 +54,7 @@
 
 		events: {
 			'click .constraint': 'addConstraint',
-		}
+		},
 
 		initialize: function() {
 			_.bindAll(this, 'render', 'addConstraint', 'appendQuery');
@@ -72,7 +72,7 @@
 		addConstraint: function() {
 			var constraint = new Constraint();
 			this.collection.add(constraint);
-		}
+		},
 
 		appendQuery: function() {
 			var list = $(this.el).children("ul");

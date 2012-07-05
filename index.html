@@ -2,7 +2,7 @@
 <html lang="en">
   <head>
     <meta charset="utf-8">
-    <title>Bootstrap, from Twitter</title>
+    <title>EventViewer</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="">
     <meta name="author" content="">
@@ -57,14 +57,12 @@
     var timesPage = "ajax/times.html";
 
     var initUI = function() {
+
       $.ajaxSetup({
         cache: false
-      })
-      var container = $(".eviewer_container");
+      });
 
-      console.log("initializing ui");
-      $("#query_buttons").buttonset();
-      console.log("all jquery ui elements initialized");
+      var container = $(".eviewer_container");
 
       //make an ajax request to load the default page into the eviewer content div
       console.log("making initial ajax request");
@@ -73,18 +71,18 @@
       //hook buttons up to their proper events
       console.log("hooking up events");
 
-      $("#radioEvents").change(function() {
-        console.log("radioEvents change!");
+      $("#button-events").click(function() {
+        console.log("events click");
         container.load(eventsPage);
       });
 
-      $("#radioLocations").change(function() {
-        console.log("radioLocations change!");
+      $("#button-locations").click(function() {
+        console.log("locations click");
         container.load(locationsPage);
       });
 
-      $("#radioTimes").change(function() {
-        console.log("radioTimes change!");
+      $("#button-times").click(function() {
+        console.log("times click");
         container.load(timesPage);
       });
     }
@@ -127,12 +125,12 @@
 
 
             <div class="btn-group" data-toggle="buttons-radio" id="query_buttons">
-              <button class="btn active">Events</button>
-              <button class="btn">Locations</button>
-              <button class="btn">Times</button>
+              <button class="btn active" id="button-events">Events</button>
+              <button class="btn" id="button-locations">Locations</button>
+              <button class="btn" id="button-times">Times</button>
             </div>
 
-            <div class="query_options">
+            <div class="eviewer_container">
 
 
             </div>
