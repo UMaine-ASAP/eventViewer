@@ -2,13 +2,12 @@
 <html lang="en">
   <head>
     <meta charset="utf-8">
-    <title>EventViewer</title>
+    <title>Bootstrap, from Twitter</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="">
     <meta name="author" content="">
 
     <!-- Le styles -->
-    <link type="text/css" href="css/custom-theme/jquery-ui-1.8.16.custom.css" rel="stylesheet" />
     <link href="css/bootstrap.css" rel="stylesheet">
     <link href="css/eventviewer.css" rel="stylesheet">
     <style>
@@ -33,9 +32,10 @@
     <link rel="apple-touch-icon-precomposed" sizes="72x72" href="ico/apple-touch-icon-72-precomposed.png">
     <link rel="apple-touch-icon-precomposed" href="ico/apple-touch-icon-57-precomposed.png">
 
-
+    <!-- Le javascript
+    ================================================== -->
+    <!-- Placed at the end of the document so the pages load faster -->
     <script src="js/jquery.js"></script>
-    <script src="js/jquery-ui.js"></script>
     <script src="js/underscore.js"></script>
     <script src="js/backbone.js"></script>
     <script src="js/bootstrap-transition.js"></script>
@@ -52,43 +52,7 @@
     <script src="js/bootstrap-typeahead.js"></script>
 
     <script>
-    var eventsPage = "ajax/events.html";
-    var locationsPage = "ajax/locations.html";
-    var timesPage = "ajax/times.html";
-
-    var initUI = function() {
-      var container = $(".eviewer_container");
-
-      console.log("initializing ui");
-      $("#query_buttons").buttonset();
-      console.log("all jquery ui elements initialized");
-
-      //make an ajax request to load the default page into the eviewer content div
-      console.log("making initial ajax request");
-      container.load(eventsPage);
-
-      //hook buttons up to their proper events
-      console.log("hooking up events");
-
-      $("#radioEvents").change(function() {
-        console.log("radioEvents change!");
-        container.load(eventsPage);
-      });
-
-      $("#radioLocations").change(function() {
-        console.log("radioLocations change!");
-        container.load(locationsPage);
-      });
-
-      $("#radioTimes").change(function() {
-        console.log("radioTimes change!");
-        container.load(timesPage);
-      });
-    }
-
     $(document).ready(function() {
-        //initialize the UI
-        initUI();
         //once the DOM is built, send credentials to the eventviewer server
         var user = "phog";
         var pass = "phog1";
@@ -123,13 +87,17 @@
     </div>
       <div class="main">
         <div class="scrollable_main">
-            <div id="query_buttons" class="ui-buttonset">
-              <input type="radio" id="radioEvents" name="radio" checked="checked"/> <label for="radioEvents">Events</label>
-              <input type="radio" id="radioLocations" name="radio" /> <label for="radioLocations">Locations</label>
-              <input type="radio" id="radioTimes" name="radio" /> <label for="radioTimes">Times</label>
+
+
+            <div class="btn-group" data-toggle="buttons-radio" id="query_buttons">
+              <button class="btn active">Events</button>
+              <button class="btn">Locations</button>
+              <button class="btn">Times</button>
             </div>
 
-            <div class="eviewer_container">
+            <div class="query_options">
+
+
             </div>
 
 
@@ -143,3 +111,4 @@
       <script src="js/notifyview.js"></script>
   </body>
 </html>
+git 
