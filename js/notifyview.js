@@ -1,5 +1,10 @@
+
 (function($) {
 
+
+Backbone.sync = function(method, model, success, error){ 
+	success();
+}
 
 /**
  *		Query - Backbone Model
@@ -58,27 +63,37 @@
 
 		initialize: function() {
 			_.bindAll(this, 'render', 'addConstraint', 'appendQuery');
+
+			this.collection = new QueryList();
+			this.collection.bind('add', this.appendQuery);
+
+			this.render();
 		},
 
 		render: function() {
 			var self = this;
 
 			$(this.el).append("<ul class=\"unstyled\"></ul>");
-			_(this.collection.models).each(function(item) {
-				this.appendQuery(item);
-			});
+			
 		},
 
-		addConstraint: function() {
+		addConstraint: function(id, type) {
 			var constraint = new Constraint();
+
+				constraint.set({
+					name: "ohaidere",
+					id_value: id,
+				});
+
 			this.collection.add(constraint);
+			console.log("added new constraint")
 		},
 
-		appendQuery: function() {
+		appendQuery: function(constraint) {
 			var list = $(this.el).children("ul");
 
 			var constraintView = new ConstraintView({
-				model: Constraint,
+				model: constraint,
 			});
 
 			$(list).last().append(constraintView.render().el);
@@ -86,5 +101,7 @@
 
 	});
 
-	var queryView = new QueryView();
+	queryView = new QueryView();
+
+
 })(jQuery);

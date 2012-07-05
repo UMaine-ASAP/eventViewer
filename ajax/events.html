@@ -1,1 +1,110 @@
-<h1>Events</h1>
+<script>
+
+$(document).ready(function() {
+
+	var dataString = "method=relation";
+
+	$.ajax({
+		type: "GET",
+		url: "get.php",
+		data: dataString,
+		success: function(data) {
+			console.log(data);
+			build_containers(data);
+		}
+	})
+});
+
+function build_containers(data){
+
+$.each(data, function(key, value){
+	$('#events_container').append('<h3 id="' + key + '"><a href="#">'+ key + ' - ' + value + '</a></h3><div id="options_container" class="' + key + '"><div class="event_col1"></div><div class="event_col2"></div><div class="event_col3"></div><div class="event_col4"></div></div>');
+})
+
+$("#events_container").accordion({
+	active: false,
+	collapsible: true,
+	change: function(event, ui){
+		var clicked = $(this).find('.ui-state-active').attr('id');
+
+		if($("div." + clicked).children('.event_col1').html() == "") {
+			var dataString = "method=meta&relation="+ clicked;
+			var value_id = clicked + "_id";
+
+			$.ajax({
+				type: "GET",
+				url: "get.php",
+				data: dataString,
+				success: function(data) {
+
+					var count = Math.floor((data.length)/4);
+					var col = 1;
+					
+					//DEBUG
+					console.log(data);
+					
+
+					$.each(data, function(key, value){
+						var div = $("div." + clicked).children('.event_col' + col).append('<li class="' + clicked +'" id="' + getid(clicked, value) + '"> <input type="checkbox" class="btn constraint">  ' + value.name + '</input></li>');
+
+						col++;
+						if(col > 4){
+							col = 1;
+						}
+
+					})
+						
+						$(".constraint").click(function() {
+							if($(this).is(":checked")){
+       							queryView.addConstraint($(this).parent().attr("id"));
+        						console.log($(this).parent().attr("id"));
+        					}
+    					});
+
+				}
+			})
+		}
+		else{
+		console.log(clicked);
+		}
+
+	}
+});
+}
+
+
+//Stupid function to deal with differing names in ID's
+
+function getid(type, value){
+	if(type == "type"){
+		return value.type_id;
+	}
+	if(type == "measurand"){
+		return value.measurand_id;
+	}
+	if(type == "source"){
+		return value.source_id;
+	}
+	if(type == "unit"){
+		return value.unit_id;
+	}
+	if(type == "transform"){
+		return value.transform_id;
+	}
+	if(type == "condition"){
+		return value.condition_id;
+	}
+	if(type == "location"){
+		return value.location_id;
+	}
+	if(type == "height"){
+		return value.height_id;
+	}
+	if(type == "medium"){
+		return value.medium_id;
+	}
+}
+
+</script>
+
+<div id="events_container"></div>

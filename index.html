@@ -8,6 +8,7 @@
     <meta name="author" content="">
 
     <!-- Le styles -->
+    <link href="css/custom-theme/jquery-ui-1.8.16.custom.css" rel="stylesheet">
     <link href="css/bootstrap.css" rel="stylesheet">
     <link href="css/eventviewer.css" rel="stylesheet">
     <style>
@@ -36,6 +37,7 @@
     ================================================== -->
     <!-- Placed at the end of the document so the pages load faster -->
     <script src="js/jquery.js"></script>
+    <script src="js/jquery-ui.js"></script>
     <script src="js/underscore.js"></script>
     <script src="js/backbone.js"></script>
     <script src="js/bootstrap-transition.js"></script>
@@ -50,8 +52,11 @@
     <script src="js/bootstrap-collapse.js"></script>
     <script src="js/bootstrap-carousel.js"></script>
     <script src="js/bootstrap-typeahead.js"></script>
+    
 
     <script>
+    var queryView;
+    
     var eventsPage = "ajax/events.html";
     var locationsPage = "ajax/locations.html";
     var timesPage = "ajax/times.html";
@@ -91,6 +96,10 @@
     }
 
     $(document).ready(function() {
+
+
+
+
         initUI();
         //once the DOM is built, send credentials to the eventviewer server
         var user = "phog";
@@ -147,7 +156,6 @@
 
       </div>
 
-      <script src="js/notifyview.js"></script>
+          <script src="js/notifyview.js"></script>
   </body>
 </html>
-git 

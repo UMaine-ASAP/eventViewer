@@ -26,8 +26,17 @@ html, body, .main {
 	padding-top: 10px;
 }
 
+.event_col1, .event_col2, .event_col3, .event_col4 {
+	float: left;
+	width: 25%;
+}
+
+#options_container {
+	height: 300px;
+}
 .eviewer_container {
 	height: 700px;
 	width: 100%;
+	padding-top: 15px;
 	background-color: green;
 }
