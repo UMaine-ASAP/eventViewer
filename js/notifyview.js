@@ -77,16 +77,20 @@ Backbone.sync = function(method, model, success, error){
 			
 		},
 
-		addConstraint: function(id, type) {
+		addConstraint: function(id, type, name, kind) {
 			var constraint = new Constraint();
 
 				constraint.set({
-					name: "ohaidere",
+					kind: kind,
+					name: name,
+					id_type: type,
 					id_value: id,
 				});
 
 			this.collection.add(constraint);
-			console.log("added new constraint")
+
+			//LOGGING
+			console.log("Added new constraint of kind \"" + kind + "\" with name: " + name + ", type: " + type + ", id: " + id)
 		},
 
 		appendQuery: function(constraint) {
