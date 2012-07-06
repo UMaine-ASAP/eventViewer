@@ -5,7 +5,6 @@ html, body, .main {
 	width: 80%;
 	overflow-y: none;
 	overflow-x: none;
-	background-color: purple;
 }
 
 .fixed_side{
@@ -38,5 +37,4 @@ html, body, .main {
 	height: 700px;
 	width: 100%;
 	padding-top: 15px;
-	background-color: green;
 }
