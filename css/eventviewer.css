@@ -30,6 +30,10 @@ html, body, .main {
 	width: 25%;
 }
 
+#events_view, #locations_view, #times_view {
+	font-weight: bold;
+}
+
 #options_container {
 	height: 300px;
 }

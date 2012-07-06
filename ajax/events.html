@@ -20,7 +20,11 @@ $.each(data, function(key, value){
 $("#events_container").accordion({
 	active: false,
 	collapsible: true,
+	create: function(event, ui){
+		$(this).accordion("activate", 0);
+	},
 	change: function(event, ui){
+
 		var clicked = $(this).find('.ui-state-active').attr('id');
 
 		if($("div." + clicked).children('.event_col1').html() == "") {
