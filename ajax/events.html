@@ -3,7 +3,11 @@
 $(document).ready(function() {
 
 	var dataString = "method=relation";
-
+	EventViewer.query(dataString, function(data) {
+		console.log(data);
+		build_containers(data);
+	});
+	/*
 	$.ajax({
 		type: "GET",
 		url: "get.php",
@@ -13,6 +17,7 @@ $(document).ready(function() {
 			build_containers(data);
 		}
 	})
+*/
 });
 
 function build_containers(data){
