@@ -41,7 +41,7 @@ $("#events_container").accordion({
 					
 
 					$.each(data, function(key, value){
-						var div = $("div." + clicked).children('.event_col' + col).append('<li class="' + clicked +'" id="' + value[clicked + "_id"] + '"> <input type="checkbox" class="btn constraint">  ' + value.name + '</input></li>');
+						var div = $("div." + clicked).children('.event_col' + col).append('<li style="padding: 3px;" class="' + clicked +'" id="' + value[clicked + "_id"] + '"> <button class="btn btn-mini constraint" href=""><i class="icon-plus"></i></button> ' + value.name + '</input></li>');
 
 						col++;
 						if(col > 4){
@@ -52,11 +52,13 @@ $("#events_container").accordion({
 					checkBoxes(queryView.collection.toJSON(), clicked);
 						
 						$(".constraint").click(function() {
-							if($(this).is(":checked")){
-       							queryView.addConstraint($(this).parent().attr("id"), clicked, $(this).parent().text(), "event");
+							if($(this).hasClass("btn-danger")){
+        						queryView.removeConstraint($(this).parent().attr("id"), $(this).parent().text());
+        						$(this).removeClass("btn-danger").children("i").toggleClass('icon-minus icon-plus');
         					}
         					else {
-        						queryView.removeConstraint($(this).parent().attr("id"), $(this).parent().text());
+        						queryView.addConstraint($(this).parent().attr("id"), clicked, $(this).parent().text(), "event");
+        						$(this).addClass("btn-danger").children("i").toggleClass('icon-plus icon-minus');
         					}
     					});
 
@@ -74,7 +76,7 @@ $("#events_container").accordion({
 function checkBoxes(checked, section){
 	$.each(checked, function(key, value){
 		if(value.id_type == section){
-			$("div." + section).find("li#" + value.id_value).children(".constraint").attr('checked', true);
+			$("div." + section).find("li#" + value.id_value).children(".constraint").addClass("btn-danger").children("i").toggleClass('icon-plus icon-minus');
 		}
 	});
 }
