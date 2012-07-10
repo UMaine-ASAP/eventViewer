@@ -4,7 +4,7 @@ var EventViewer = {
 			type: "GET",
 			url: "get.php",
 			data: dataString,
-			success: success,
+			success: success
 		});
 	}
 };
