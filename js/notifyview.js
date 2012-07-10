@@ -78,7 +78,7 @@ Backbone.sync = function(method, model, success, error){
 		render: function() {
 			var self = this;
 
-			$(this.el).append("<ul class=\"unstyled\"></ul>");
+			$(this.el).append("<ul class=\"unstyled\"><li>Events</li><li><ul id=\"events_view\"></ul></li><li>Locations</li><li><ul id=\"locations_view\"></ul></li><li>Times</li><li><ul id=\"times_view\"></ul></li></ul>");
 			
 		},
 
@@ -111,11 +111,22 @@ Backbone.sync = function(method, model, success, error){
 		appendQuery: function(constraint) {
 			var list = $(this.el).children("ul");
 
+			var kind = constraint.get('kind');
+
 			var constraintView = new ConstraintView({
 				model: constraint,
 			});
 
-			$(list).last().append(constraintView.render().el);
+			if(kind == "event"){
+				$(list).find("#events_view").last().append(constraintView.render().el);
+			}
+			else if(kind == "location"){
+				$(list).find("#locations_view").last().append(constraintView.render().el);
+			}
+			else if(kind == "time"){
+				$(list).find("#times_view").last().append(constraintView.render().el);
+			}
+
 		},
 
 	});
