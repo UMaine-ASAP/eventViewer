@@ -1,1 +1,37 @@
-<h1>Locations</h1>
+    <script type="text/javascript">
+
+    $(document).ready(function() {
+        var dataString = "method=getLocLatLong"
+        EventViewer.query(dataString, function(data){
+            var locations = data;
+            //console.log(locations);
+            $("#map_canvas").gmap3(
+            {
+                action: 'init',
+                options: {
+                    center: [45.13943,-69.043579],
+                    zoom: 8,
+                },
+            },
+            {action: 'addMarkers',
+                markers: locations,
+                marker: {
+                    options: {
+                        icon: new google.maps.MarkerImage('http://maps.gstatic.com/mapfiles/icon_green.png')
+                    },
+                    events:{
+                        click: function(marker, event, data){
+                           console.log(data);
+                        }
+                    }
+                }
+            }
+            );
+        });
+
+    });
+    </script>
+
+<div class="page-header"><h1>Locations <small>What in the world is a location? ... or Where?!</small></h1></div>
+
+<div id="map_canvas" style="height: 750px; width: 100%;"></div>

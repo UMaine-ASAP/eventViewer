@@ -6,7 +6,7 @@ $(document).ready(function() {
 
 	var dataString = "method=relation";
 	EventViewer.query(dataString, function(data) {
-		console.log(data);
+		//console.log(data);
 		build_containers(data);
 	});
 });
@@ -41,7 +41,7 @@ $("#events_container").accordion({
 					var col = 1;
 					
 					//DEBUG
-					console.log(data);
+					//console.log(data);
 					
 
 					$.each(data, function(key, value){

@@ -1079,14 +1079,14 @@ AND location.location_id in (".multi_implode(',',$_option).")) AS data ORDER BY 
 		}
 
 		// return a location name, height, and location_id for point locations
-		$select = "SELECT st_xmin(location.location) as lat, st_ymin(location.location) as long, location.location_id ";
+		$select = "SELECT st_xmin(location.location) as lng, st_ymin(location.location) as lat, location.location_id as data ";
 		$from = "FROM location ";
 		$order = "ORDER BY location.location_id;";
 		
 		$query = $select.$from.$where.$order;
 		
 		$_option = pg_fetch_all(pg_query($dbconn, $query));
-		
+
 		header('Content-type: application/json');
 		echo json_encode($_option);
 	
