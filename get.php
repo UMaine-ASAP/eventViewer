@@ -1142,9 +1142,47 @@ AND location.location_id in (".multi_implode(',',$_option).")) AS data ORDER BY 
 			header('Content-type: application/json');
 			echo json_encode($_option);
 		}
-		
+	} elseif (strtolower($_GET['method']) == "getsubcategorieslocations" && $dbconn) {	
 	
-	} 
+		if (isset($_GET['category_id'])) {
+				$return_value = getSubCategoriesLocations($_GET['category_id'], $dbconn);
+			}
+			
+			header('Content-type: application/json');
+			echo json_encode($return_value);
+		}
+	
+}
+
+function getSubCategoriesLocations($id, $dbconn){
+			$where = "WHERE location_category.category_id = location_category_view.child_id AND location_category_view.category_id = ".$id."; ";
+			$select = "SELECT location_category_view.child_id, location_category.name, location_category_view.location_id ";
+			$from = "FROM location_category_view, location_category ";
+			
+			$query = $select.$from.$where;
+			
+			$_option = pg_fetch_all(pg_query($dbconn, $query));
+			
+			foreach ($_option as $key => $h) {
+				if ($h['child_id'] == $id) {
+					$query = "SELECT location_name.name, st_xmin(location.location) as lng, st_ymin(location.location) as lat FROM location_name, location WHERE location_name.location_id = ".$h['location_id']." AND location_name.location_id = location.location_id;";
+					$name = pg_fetch_all(pg_query($dbconn, $query));
+					if ($name[0]['name'] == null) {
+						
+					} else {
+						$_option[$key]['name'] = $name[0]['name'];
+						$_option[$key]['lat'] = $name[0]['lat'];
+						$_option[$key]['lng'] = $name[0]['lng'];
+						error_log($name[0]['lat']);
+					}
+				}
+				else {
+					getSubCategoriesLocations($h['child_id'], $dbconn);
+					error_log($h['child_id']);
+				}
+			}
+		return $_option;
+
 }
 
 // Converts AS3 time value to MySql timestamp value
