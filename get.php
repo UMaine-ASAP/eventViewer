@@ -1142,6 +1142,8 @@ AND location.location_id in (".multi_implode(',',$_option).")) AS data ORDER BY 
 			header('Content-type: application/json');
 			echo json_encode($_option);
 		}
+
+	
 	} elseif (strtolower($_GET['method']) == "getsubcategorieslocations" && $dbconn) {	
 	
 		if (isset($_GET['category_id'])) {
@@ -1158,6 +1160,8 @@ AND location.location_id in (".multi_implode(',',$_option).")) AS data ORDER BY 
 	
 }
 
+
+//Copyright Ben Carlson
 function getSubCategoriesLocations($id, $dbconn){
 			$where = "WHERE location_category.category_id = location_category_view.child_id AND location_category_view.category_id = ".$id."; ";
 			$select = "SELECT location_category_view.child_id, location_category.name, location_category_view.location_id ";
@@ -1186,7 +1190,7 @@ function getSubCategoriesLocations($id, $dbconn){
 					$_option[$key]['points'] = getSubCategoriesLocations($h['child_id'], $dbconn);
 				}
 			}
-			return $_option;
+		return $_option;
 
 }
 
