@@ -1146,9 +1146,13 @@ AND location.location_id in (".multi_implode(',',$_option).")) AS data ORDER BY 
 	
 		if (isset($_GET['category_id'])) {
 				$return_value = getSubCategoriesLocations($_GET['category_id'], $dbconn);
+
+				echo "<pre>";
+				print_r($return_value);
+				echo "</pre>";
 			}
 			
-			header('Content-type: application/json');
+			//header('Content-type: application/json');
 			echo json_encode($return_value);
 		}
 	
@@ -1164,24 +1168,25 @@ function getSubCategoriesLocations($id, $dbconn){
 			$_option = pg_fetch_all(pg_query($dbconn, $query));
 			
 			foreach ($_option as $key => $h) {
+				//echo $id;
 				if ($h['child_id'] == $id) {
 					$query = "SELECT location_name.name, st_xmin(location.location) as lng, st_ymin(location.location) as lat FROM location_name, location WHERE location_name.location_id = ".$h['location_id']." AND location_name.location_id = location.location_id;";
 					$name = pg_fetch_all(pg_query($dbconn, $query));
 					if ($name[0]['name'] == null) {
 						
 					} else {
+						unset($_option[$key]['child_id']);
 						$_option[$key]['name'] = $name[0]['name'];
 						$_option[$key]['lat'] = $name[0]['lat'];
 						$_option[$key]['lng'] = $name[0]['lng'];
-						error_log($name[0]['lat']);
+						
 					}
 				}
 				else {
-					getSubCategoriesLocations($h['child_id'], $dbconn);
-					error_log($h['child_id']);
+					$_option[$key]['points'] = getSubCategoriesLocations($h['child_id'], $dbconn);
 				}
 			}
-		return $_option;
+			return $_option;
 
 }
 
