@@ -35,12 +35,23 @@
 
         if(locations.length != 0){
             var categories = locations.join(",");
-            var dataString = ""
-            EventViewer.query()
-            $("map_canvas").gmap3({
-                action: 'addMarkers',
-
-            })
+            var dataString = "";
+            EventViewer.query("method=getSubCategoriesLocations&category_id=8", function(data){
+                $.each(data, function(key, value){
+                    console.log(value['points']);
+                    $.each(value['points'], function(index, point){
+                        $("map_canvas").gmap3({
+                            action: 'addMarker',
+                            latLng: [point['lat'], point['lng']],
+                            options: {
+                                icon: new google.maps.MarkerImage('http://maps.gstatic.com/mapfiles/icon_green.png'),
+                                draggable: true,
+                                animation: google.maps.Animation.DROP
+                            }
+                        });
+                    });
+                });
+            });
         }
     });
 

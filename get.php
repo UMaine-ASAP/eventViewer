@@ -1113,7 +1113,7 @@ AND location.location_id in (".multi_implode(',',$_option).")) AS data ORDER BY 
 	#############################################################
 	##                                                         ##
 	##        RELATION: method=getSubCategories                ##
-	##                    &category_id=	    <id>          ##
+	##                    &category_id=	    <id>          	   ##
 	##                                                         ##
 	#############################################################
 	} elseif (strtolower($_GET['method']) == "getsubcategories" && $dbconn) {	
@@ -1143,17 +1143,20 @@ AND location.location_id in (".multi_implode(',',$_option).")) AS data ORDER BY 
 			echo json_encode($_option);
 		}
 
-	
+	#############################################################
+	##                                                         ##
+	##        RELATION: method=getSubCategoriesLocations       ##
+	##                    &category_id=	    <id>          	   ##
+	##                                                         ##
+	#############################################################
 	} elseif (strtolower($_GET['method']) == "getsubcategorieslocations" && $dbconn) {	
 	
 		if (isset($_GET['category_id'])) {
 				$return_value = getSubCategoriesLocations($_GET['category_id'], $dbconn);
-
-				echo "<pre>";
-				print_r($return_value);
-				echo "</pre>";
 			}
-			
+			echo "<pre>";
+			print_r($return_value);
+			echo "</pre>";
 			//header('Content-type: application/json');
 			echo json_encode($return_value);
 		}
@@ -1162,6 +1165,20 @@ AND location.location_id in (".multi_implode(',',$_option).")) AS data ORDER BY 
 
 
 //Copyright Ben Carlson
+
+/* function getSubCategoriesLocations($id, $dbconn)
+ * 
+ *	Takes a location category_id and will recursivly find all locations under that category.
+ *
+ *	@param 		$id 		category_id of initial location
+ *	@param 		$dbconn 	Postgres Connection
+ *
+ *	@return 	$_option 	Multidimensional array for all locations, sub locations, and lat/long where applicable
+ *
+ *	Function will recursivly run until the child_id is equal to the query id, meaning it has found a true "location".  It will
+ *	at that point, return name, location_id, lat, and lng of the location, all nested within its parents.
+ *
+ */
 function getSubCategoriesLocations($id, $dbconn){
 			$where = "WHERE location_category.category_id = location_category_view.child_id AND location_category_view.category_id = ".$id."; ";
 			$select = "SELECT location_category_view.child_id, location_category.name, location_category_view.location_id ";
@@ -1179,10 +1196,20 @@ function getSubCategoriesLocations($id, $dbconn){
 					if ($name[0]['name'] == null) {
 						
 					} else {
-						unset($_option[$key]['child_id']);
+						//This was my initial stuff, but I modified below to fit with gmap3...
+						/*unset($_option[$key]['child_id']);
 						$_option[$key]['name'] = $name[0]['name'];
 						$_option[$key]['lat'] = $name[0]['lat'];
 						$_option[$key]['lng'] = $name[0]['lng'];
+						*/
+						$_option[$key]['lat'] = $name[0]['lat'];
+						$_option[$key]['lng'] = $name[0]['lng'];
+						$_option[$key]['data']['name'] = $name[0]['name'];
+						$_option[$key]['data']['location_id'] = $_option[$key]['location_id'];
+
+						unset($_option[$key]['child_id']);
+						unset($_option[$key]['location_id']);
+						unset($_option[$key]['name']);
 						
 					}
 				}
