@@ -8,3 +8,15 @@ var EventViewer = {
 		});
 	}
 };
+
+Array.prototype.filterOutValue = function(v) {
+    var x, _i, _len, _results;
+    _results = [];
+    for (_i = 0, _len = this.length; _i < _len; _i++) {
+        x = this[_i];
+        if (x !== v) {
+            _results.push(x);
+        }
+    }
+    return _results;
+};

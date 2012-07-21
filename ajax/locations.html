@@ -1,6 +1,50 @@
     <script type="text/javascript">
 
-    $(document).ready(function() {
+
+    $(document).ready(function(){
+    //On document ready, initialize google map so everything is pretty
+    //Still using gmap3, not sure if I will come to regret this.
+        EventViewer.query("method=getRootCategories", function(data){
+            var map_control = $(document).find("#map_control");
+            console.log(data);
+            $.each(data, function(key, value){
+                map_control.append('<button class="btn btn-primary" id="'+ value['category_id'] +'">'+ value['name'] +'</button>').children().last().click(function(){
+                    if($(this).hasClass("active")){
+                        locations = locations.filterOutValue($(this).attr("id"));
+                    }
+                    else {
+                        locations.push($(this).attr("id"));
+                    }
+                    console.log(locations);
+                }).addClass(function(index){
+                    if(jQuery.inArray(value['category_id'], locations) != -1){
+                        return "active";
+                    }
+                });
+            });
+        });
+
+
+        $("#map_canvas").gmap3({
+            action: 'init',
+            options: {
+                center: [45.13943, -69.043579],
+                zoom: 8
+            }
+        });
+
+        if(locations.length != 0){
+            var categories = locations.join(",");
+            var dataString = ""
+            EventViewer.query()
+            $("map_canvas").gmap3({
+                action: 'addMarkers',
+
+            })
+        }
+    });
+
+    /*$(document).ready(function() {
         var dataString = "method=getLocLatLong";
         EventViewer.query(dataString, function(data){
             var locations = data;
@@ -50,9 +94,10 @@
             );
         });
 
-    });
+    });*/
     </script>
 
 <div class="page-header"><h1>Locations <small>What in the world is a location? ... or Where?!</small></h1></div>
-
-<div id="map_canvas" style="height: 750px; width: 100%;"></div>
+<h4>Show Points For:</h4>
+<div id="map_control" class="btn-group" data-toggle="buttons-checkbox"></div>
+<div id="map_canvas"  style="height: 750px; width: 100%; position: relative;"></div>
